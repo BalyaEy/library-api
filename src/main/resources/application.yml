@@ -2,8 +2,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/librarydb
     username: postgres
-    password: senin_sifren
-  jpa:
+    password: "10140019"
+    jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -15,4 +15,4 @@ spring:
       mode: always
 
 server:
-  port: 8080
+  port: 8085
