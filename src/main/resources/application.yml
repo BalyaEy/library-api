@@ -3,7 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/librarydb
     username: postgres
     password: "10140019"
-    jpa:
+  jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
