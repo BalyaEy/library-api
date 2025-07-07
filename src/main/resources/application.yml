@@ -5,7 +5,7 @@ spring:
     password: "10140019"
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -18,5 +18,5 @@ server:
   port: 8085
 
 jwt:
-  secret: "secret-key-should-be-long-and-secure-123456"
-  expiration: 86400000 # 1 gün = 24 * 60 * 60 * 1000 ms
+  secret: "s3cReT_jwT_KEY_1234567890!_abcDEF"
+  expiration: 86400000 # 24 saat (ms cinsinden)

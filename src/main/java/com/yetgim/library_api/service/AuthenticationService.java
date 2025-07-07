@@ -1,6 +1,6 @@
 package com.yetgim.library_api.service;
 
-
+import com.yetgim.library_api.dto.AuthRequest;
 import com.yetgim.library_api.dto.AuthResponse;
 import com.yetgim.library_api.dto.RegisterRequest;
 import com.yetgim.library_api.entity.User;
@@ -23,21 +23,6 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthResponse authenticate(RegisterRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        String token = jwtService.generateToken(new HashMap<>(), user.getUsername());
-
-        return AuthResponse.builder()
-                .token(token)
-                .build();
-    }
-
     public AuthResponse register(RegisterRequest request) {
         String hashedPass = passwordEncoder.encode(request.getPassword());
 
@@ -56,4 +41,23 @@ public class AuthenticationService {
                 .token(token)
                 .build();
     }
+
+    public AuthResponse authenticate(AuthRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        var jwtToken = jwtService.generateToken(new HashMap<>(), user.getUsername());
+
+        return AuthResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
 }

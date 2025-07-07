@@ -1,5 +1,6 @@
 package com.yetgim.library_api.controller;
 
+import com.yetgim.library_api.dto.AuthRequest;
 import com.yetgim.library_api.dto.AuthResponse;
 import com.yetgim.library_api.dto.RegisterRequest;
 import com.yetgim.library_api.service.AuthenticationService;
@@ -23,5 +24,12 @@ public class AuthController {
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
 }
+
 
