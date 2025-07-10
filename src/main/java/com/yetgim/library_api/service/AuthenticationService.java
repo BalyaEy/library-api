@@ -7,6 +7,7 @@ import com.yetgim.library_api.entity.User;
 import com.yetgim.library_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,25 +39,26 @@ public class AuthenticationService {
         String token = jwtService.generateToken(new HashMap<>(), user.getUsername());
 
         return AuthResponse.builder()
+                .message("User registered successfully")
                 .token(token)
                 .build();
     }
 
+
     public AuthResponse authenticate(AuthRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
 
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        var jwtToken = jwtService.generateToken(new HashMap<>(), user.getUsername());
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+
+        String token = jwtService.generateToken(new HashMap<>(), user.getUsername());
 
         return AuthResponse.builder()
-                .token(jwtToken)
+                .token(token)
+                .message("Authentication successful")
                 .build();
     }
 
