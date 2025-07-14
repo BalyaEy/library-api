@@ -39,11 +39,9 @@ public class AuthenticationService {
         String token = jwtService.generateToken(new HashMap<>(), user.getUsername());
 
         return AuthResponse.builder()
-                .message("User registered successfully")
                 .token(token)
                 .build();
     }
-
 
     public AuthResponse authenticate(AuthRequest request) {
 

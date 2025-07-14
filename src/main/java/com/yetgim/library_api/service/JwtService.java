@@ -14,10 +14,11 @@ import java.util.function.Function;
 public class JwtService {
 
     @Value("${jwt.secret}")
-    private String secretKey;
+    private String secretKey ;
+
 
     @Value("${jwt.expiration}")
-    private long jwtExpiration;
+    private long jwtExpiration ;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());

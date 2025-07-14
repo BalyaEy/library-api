@@ -94,7 +94,7 @@ Request Body (JSON):
   "username": "Adam",
   "email": "x@x.com",
   "password": "1234",
-  "role": "MEMBER"
+  "role": "ROLE_ADMIN"
 }
 ```
 
