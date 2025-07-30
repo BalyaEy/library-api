@@ -110,7 +110,7 @@ Request Body (JSON):
 
 - [x] User registration
 - [ ] User login
-- [ ] JWT authentication
+- [x] JWT authentication
 - [ ] Role-based authorization
 - [ ] Book & borrowing management
 - [ ] Full Docker support
