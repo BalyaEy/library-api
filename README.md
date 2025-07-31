@@ -111,7 +111,7 @@ Request Body (JSON):
 - [x] User registration
 - [ ] User login
 - [x] JWT authentication
-- [ ] Role-based authorization
+- [x] Role-based authorization
 - [ ] Book & borrowing management
 - [ ] Full Docker support
 
