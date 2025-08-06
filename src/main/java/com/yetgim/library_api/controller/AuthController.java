@@ -3,15 +3,13 @@ package com.yetgim.library_api.controller;
 import com.yetgim.library_api.dto.AuthRequest;
 import com.yetgim.library_api.dto.AuthResponse;
 import com.yetgim.library_api.dto.RegisterRequest;
+import com.yetgim.library_api.dto.RefreshTokenRequest;
 import com.yetgim.library_api.service.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,6 +28,9 @@ public class AuthController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.ok(authenticationService.refreshToken(request, response));
+    }
+
 }
-
-

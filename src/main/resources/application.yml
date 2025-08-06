@@ -20,3 +20,5 @@ server:
 jwt:
   secret: "s3cReT_jwT_KEY_1234567890!_abcDEF"
   expiration: 86400000 # 24 saat (ms cinsinden)
+  access-expiration: 86400000
+  refresh-expiration: 604800000  # 7 gün

@@ -1,5 +1,5 @@
 package com.yetgim.library_api.service;
-
+import com.yetgim.library_api.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -24,15 +25,17 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public String generateToken(Map<String, Object> extraClaims, String username) {
+    public String generateToken(Map<String, Object> extraClaims, String username, long expiration) {
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+
     }
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -47,6 +50,19 @@ public class JwtService {
         return resolver.apply(claims);
     }
 
+    public String generateRefreshToken(User user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 7 gün
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+        // return generateToken(new HashMap<>(), user.getUsername(), refreshTokenExpiration);
+    }
+    @Value("${jwt.refresh-expiration}")
+    private long refreshTokenExpiration;
+
+
     public boolean isTokenValid(String token, String username) {
         return extractUsername(token).equals(username) && !isTokenExpired(token);
     }
@@ -55,4 +71,8 @@ public class JwtService {
         Date expiration = extractClaim(token, Claims::getExpiration);
         return expiration.before(new Date());
     }
+    public long getJwtExpiration() {
+        return jwtExpiration;
+    }
+
 }
