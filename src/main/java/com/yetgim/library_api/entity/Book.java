@@ -1,7 +1,12 @@
 package com.yetgim.library_api.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -9,16 +14,25 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
-    private String author;
+    @Column(nullable = false, unique = true)
+    private String isbn;
 
-    private String publisher;
+    private LocalDate publishedDate;
 
     private int stock;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 }
